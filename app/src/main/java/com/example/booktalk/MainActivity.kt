@@ -8,10 +8,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.ExperimentalComposeUiApi
 import com.example.booktalk.navigation.NavGraph
 import com.example.booktalk.ui.theme.BookTalkTheme
-import dagger.hilt.android.AndroidEntryPoint
+
 
 @ExperimentalComposeUiApi
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

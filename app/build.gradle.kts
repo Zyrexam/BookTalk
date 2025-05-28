@@ -2,11 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.hilt)
-    kotlin("kapt")
     alias(libs.plugins.kotlin.serialization)
-
 }
+
 
 android {
     namespace = "com.example.booktalk"
@@ -46,7 +44,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.7"
+        kotlinCompilerExtensionVersion = "2.0.0"
     }
 
     packaging {
@@ -57,10 +55,8 @@ android {
 }
 
 dependencies {
-    // Compose BOM
+    // Compose BOM and AndroidX
     implementation(platform(libs.androidx.compose.bom))
-
-    // Core Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -69,34 +65,23 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
 
-    implementation("androidx.compose.material3:material3:1.1.2")
-
-
-    // Navigation Compose (via Version Catalog)
+    // Navigation
     implementation(libs.navigation.compose)
 
-    // Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
 
-    // Coil for image loading
+    // Coil & Accompanist
     implementation(libs.coil.compose)
-
-    // Accompanist (for FlowLayout)
     implementation(libs.accompanist.flowlayout)
 
-    // Testing
+    // Kotlin Serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    // Debug & Testing
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-
-    // Debug tools
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-}
-dependencies {
-    implementation(libs.kotlinx.serialization.json)
 }

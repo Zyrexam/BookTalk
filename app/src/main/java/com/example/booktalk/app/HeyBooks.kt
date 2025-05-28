@@ -1,7 +1,7 @@
-package com.example.booktalk.app
-
-import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
-
-@HiltAndroidApp
-class HeyBooks: Application()
+//package com.example.booktalk.app
+//
+//import android.app.Application
+////import dagger.hilt.android.HiltAndroidApp
+//
+//@HiltAndroidApp
+//class BookTalkApp : Application()

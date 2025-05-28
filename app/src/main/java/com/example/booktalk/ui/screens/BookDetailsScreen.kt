@@ -8,6 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -20,34 +22,37 @@ import com.example.booktalk.ui.theme.typography
 import com.example.booktalk.utils.DetailViewState
 import com.example.booktalk.viewModel.MainViewModel
 
-
-
-
 @Composable
 fun BookDetailsScreen(viewModel: MainViewModel, actions: MainActions) {
-
-
     Scaffold(topBar = {
         TopBar(title = stringResource(id = R.string.text_bookDetails), action = actions)
-    }) {
-
-        BookDetails(viewModel = viewModel)
+    }) { paddingValues ->
+        BookDetails(
+            viewModel = viewModel,
+            modifier = Modifier.padding(paddingValues)
+        )
     }
-
 }
 
 @Composable
-fun BookDetails(viewModel: MainViewModel) {
-    when (val result = viewModel.bookDetails.value) {
-        DetailViewState.Loading -> Text(text = "Loading")
-        is DetailViewState.Error -> Text(text = "Error found: ${result.exception}")
-        is DetailViewState.Success -> {
-            val book = result.data
+fun BookDetails(viewModel: MainViewModel, modifier: Modifier = Modifier) {
+    val result by viewModel.bookDetails.collectAsState()
 
-            LazyColumn {
+    when (result) {
+        DetailViewState.Loading -> Text(text = "Loading")
+        is DetailViewState.Error -> Text(text = "Error found: ${(result as DetailViewState.Error).exception}")
+        is DetailViewState.Success -> {
+            val book = (result as DetailViewState.Success).data
+
+            LazyColumn(modifier = modifier) {
                 // Book Details Card
                 item {
-                    BookDetailsCard(book.title, book.authors, book.thumbnailUrl, book.categories)
+                    BookDetailsCard(
+                        title = book.title,
+                        authors = book.authors,
+                        thumbnailUrl = book.thumbnailUrl,
+                        categories = book.categories
+                    )
                 }
 
                 // Description
@@ -69,7 +74,6 @@ fun BookDetails(viewModel: MainViewModel) {
                     )
                 }
             }
-
         }
         DetailViewState.Empty -> Text("No results found!")
     }

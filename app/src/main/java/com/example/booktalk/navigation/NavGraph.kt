@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.HiltViewModelFactory
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavType
@@ -17,10 +15,11 @@ import com.example.booktalk.ui.screens.BookDetailsScreen
 import com.example.booktalk.ui.screens.BookListScreen
 import com.example.booktalk.viewModel.MainViewModel
 
-
 object EndPoints {
     const val ID = "id"
 }
+
+
 @ExperimentalComposeUiApi
 @Composable
 fun NavGraph() {
@@ -31,20 +30,19 @@ fun NavGraph() {
     NavHost(navController, startDestination = Screen.BookList.route) {
         // Home
         composable(Screen.BookList.route) {
-            val viewModel: MainViewModel = viewModel(
-                factory = HiltViewModelFactory(LocalContext.current, it)
-            )
+            // Create ViewModel manually without Hilt
+            val viewModel: MainViewModel = viewModel { MainViewModel() }
             viewModel.getAllBooks(context = context)
             BookListScreen(viewModel, actions)
         }
 
-
-        // Task Details
+        // Book Details
         composable(
             "${Screen.Details.route}/{id}",
             arguments = listOf(navArgument(EndPoints.ID) { type = NavType.StringType })
         ) {
-            val viewModel = hiltViewModel<MainViewModel>(it)
+            // Create ViewModel manually without Hilt
+            val viewModel: MainViewModel = viewModel { MainViewModel() }
             val isbnNo = it.arguments?.getString(EndPoints.ID)
                 ?: throw IllegalStateException("'Book ISBN No' shouldn't be null")
 
@@ -53,8 +51,6 @@ fun NavGraph() {
         }
     }
 }
-
-
 
 class MainActions(navController: NavController) {
 
@@ -70,3 +66,5 @@ class MainActions(navController: NavController) {
         navController.navigate(Screen.BookList.route)
     }
 }
+
+

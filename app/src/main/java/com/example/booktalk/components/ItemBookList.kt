@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.example.booktalk.ui.theme.primary
 import com.example.booktalk.ui.theme.text
 import com.example.booktalk.ui.theme.typography
@@ -55,8 +55,8 @@ fun ItemBookList(
         ) {
             // Image
             Image(
-                painter = rememberImagePainter(
-                    data = thumbnailUrl
+                painter = rememberAsyncImagePainter(
+                    model = thumbnailUrl
                 ),
                 contentDescription = null,
                 modifier = Modifier
